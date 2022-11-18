@@ -1,0 +1,12 @@
+.centerText{
+  text-align: center;
+}
+
+.homeMenu{
+  margin-bottom: 5em;
+}
+
+.carSearch{
+  display: flex;
+  justify-content: center;
+}
