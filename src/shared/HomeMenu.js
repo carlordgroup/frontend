@@ -18,8 +18,8 @@ import {
 } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Bookings', 'Contact'];
-const links = ['/', '/bookings', ''];
+const navItems = ['Home', 'Bookings', 'Account', 'Contact'];
+const links = ['/', '/bookings', '/account', ''];
 
 function DrawerAppBar(props) {
   const { window } = props;
