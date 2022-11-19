@@ -13,13 +13,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {
-  Link
-} from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Bookings', 'Contact'];
-const links = ['/', '/bookings', ''];
+const navItems = ['Home', 'About', 'Contact'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -70,9 +66,9 @@ function DrawerAppBar(props) {
             Carlord
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <Button key={item} sx={{ color: '#fff' }}>
-                <Link to={links[index]}>{item}</Link>
+                {item}
               </Button>
             ))}
           </Box>
