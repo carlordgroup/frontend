@@ -1,0 +1,11 @@
+.iconPad {
+    margin-left: auto;
+    margin-right: auto;
+    width: 3%;
+    padding: 10px;
+    display: flex;
+}
+
+.default {
+    border: 2px solid;
+}
