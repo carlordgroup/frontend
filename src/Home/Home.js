@@ -1,5 +1,5 @@
 import React from 'react'
-import HomeMenu from './HomeMenu'
+import HomeMenu from '../shared/HomeMenu'
 import './home.css'
 import Grid from '@mui/material/Grid';
 import FilledInput from '@mui/material/FilledInput';
