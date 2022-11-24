@@ -13,14 +13,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import './homeMenu.css'
 
 import {
   Link
 } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ['Home', 'Bookings', 'Account', 'Contact'];
-const links = ['/', '/bookings', '/account', ''];
+const navItems = ['Home', 'Bookings', 'Account', 'Contact', 'Login'];
+const links = ['/', '/bookings', '/account', '/contact', '/login'];
 
 function DrawerAppBar(props) {
   const { window } = props;
@@ -73,7 +74,7 @@ function DrawerAppBar(props) {
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item, index) => (
               <Button key={item} sx={{ color: '#fff' }}>
-                <Link to={links[index]}>{item}</Link>
+                <Link to={links[index]} className="homeMenuLinks">{item}</Link>
               </Button>
             ))}
           </Box>
