@@ -1,4 +1,5 @@
 import Home from './Home/Home'
+<<<<<<< HEAD
 import Bookings from './Bookings/Bookings'
 import Account from './Account/Account'
 import {
@@ -6,10 +7,13 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+=======
+>>>>>>> 50054f03eacd20bf08a036abd1b9bbaa831ec305
 
 function App() {
   return (
     <div className="App">
+<<<<<<< HEAD
       <Router>
           {/* <nav>
             <ul>
@@ -30,6 +34,9 @@ function App() {
             <Route path="/" element={<Home />}/>
           </Routes>
       </Router>
+=======
+      <Home/>
+>>>>>>> 50054f03eacd20bf08a036abd1b9bbaa831ec305
     </div>
   );
 }
