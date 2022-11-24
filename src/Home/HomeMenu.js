@@ -15,7 +15,12 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 const drawerWidth = 240;
+<<<<<<< HEAD:src/shared/HomeMenu.js
+const navItems = ['Home', 'Bookings', 'Account', 'Contact'];
+const links = ['/', '/bookings', '/account', ''];
+=======
 const navItems = ['Home', 'About', 'Contact'];
+>>>>>>> 50054f03eacd20bf08a036abd1b9bbaa831ec305:src/Home/HomeMenu.js
 
 function DrawerAppBar(props) {
   const { window } = props;

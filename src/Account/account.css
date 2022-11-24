@@ -1,0 +1,34 @@
+.accountPad {
+    margin-top: 2cm;
+    
+}
+
+.profile {
+    text-align: center;
+}
+
+.textFields {
+    border-radius: 25px;
+    border: 2px solid;
+    padding: 20px;
+    width: 275px;
+    height: 400px;
+    margin: 20px;
+    display: flex;
+}
+
+.buttonPad {
+    left: 190px;
+}
+
+.userInfo {
+    border-radius: 25px;
+    border: 2px solid;
+    padding: 20px;
+    width: 275px;
+    height: 400px;
+    position: absolute;
+    margin-left: 375px;
+    display: flex;
+    bottom: 51px;
+}
