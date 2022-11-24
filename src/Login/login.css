@@ -1,0 +1,30 @@
+.loginForm{
+  display: flex;
+  justify-content: center;
+  margin-top: 5em;
+}
+
+.LoginSpacing{
+  padding-bottom: 2em;
+}
+
+.loginRedirect{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 0.75em;
+}
+.loginLink{
+  text-decoration: none;
+}
+
+.loginButton{
+  display: flex;
+  justify-content: center;
+  padding-top: 1em;
+}
+
+.resetText{
+  text-align: center;
+  padding-top: 1em;
+}
