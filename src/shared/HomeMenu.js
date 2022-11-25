@@ -12,8 +12,8 @@ import {
   Link
 } from "react-router-dom";
 
-const navItems = ['Home', 'Bookings', 'Account', 'Contact', 'Login'];
-const links = ['/', '/bookings', '/account', '/contact', '/login'];
+const navItems = ['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login'];
+const links = ['/', '/carlisting', '/bookings', '/account', '/contact', '/login'];
 
 function DrawerAppBar(props) {
   return (

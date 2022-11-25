@@ -26,7 +26,7 @@ const rows = [
   { id: 2, lastName: 'Cho', firstName: 'Dan', car: "Camry", carID: '124', confirmID: '421' },
 ];
 
-export default function Bookings() {
+const Bookings = () => {
   return (
     <div className="bookingPad" style={{ height: 400, width: '100%' }}>
       <DataGrid
@@ -40,3 +40,5 @@ export default function Bookings() {
     </div>
   );
 }
+
+export default Bookings
