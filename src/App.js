@@ -5,6 +5,7 @@ import CarListing from './CarListing/carListing'
 import Login from './Login/Login'
 import CreateAccount from './Login/CreateAccount'
 import ForgotPassword from './Login/ForgotPassword'
+import Contact from './Contact/Contact'
 import {
   BrowserRouter as Router,
   Routes,
@@ -33,6 +34,7 @@ function App() {
             <Route path="/Account" element={<Account />}/>
             <Route path="/bookings" element={<Bookings />}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/contact" element={<Contact/>}/>
             <Route path="/login/create" element={<CreateAccount/>}/>
             <Route path="/login/reset" element={<ForgotPassword/>}/>
             <Route path="/" element={<Home />}/>

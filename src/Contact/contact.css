@@ -1,0 +1,11 @@
+.contact{
+  text-align: center;
+  margin-top: 5em;
+}
+
+.contactTextBox{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 10em;
+}
