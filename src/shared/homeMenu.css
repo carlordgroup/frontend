@@ -1,0 +1,12 @@
+.homeMenuLinks{
+  text-decoration: none;
+  color: white;
+}
+
+.logoImage{
+  padding-top: 10px;
+}
+
+.homeMenu > nav{
+  background-color: #66b2ff;
+}
