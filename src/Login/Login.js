@@ -20,21 +20,21 @@ const Login = () => {
     setLogin({email:"test2@gmail.com", password: "test"})
     setConfig({
       headers: {
-         Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk3NzAyMzcsImlkIjoxMiwib3JpZ19pYXQiOjE2Njk2ODM4Mzd9.WUhLoGaNFDPW1qQhnd7pwZx99NrYKd1VBmJgpUj6stk"
+         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk3NzY3NTEsImlkIjoxMiwib3JpZ19pYXQiOjE2Njk2OTAzNTF9.rCDoEHxz9P5AAZLgi-rqkVeQyoyFWRltnMadlSFkBoM"
       }
    })
   }, [])
 
-  // useEffect(() => {
-  //   console.log(config)
-  //   axios.get(`https://carlord.moki.cat/api/account/`, config)
-  //       .then(res => {
-  //         console.log(res);
-  //         console.log(res.data);
-  //       }).catch((error) => {
-  //         console.log(error.response.data)
-  //       })
-  // }, [config])
+  useEffect(() => {
+    console.log(config)
+    axios.get(`https://carlord.moki.cat/api/account/`, config)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        }).catch((error) => {
+          console.log(error.response.data)
+        })
+  }, [config])
 
   // useEffect(() => {
   //   console.log(login)
@@ -47,15 +47,15 @@ const Login = () => {
   //       })
   // }, [login])
 
-  useEffect(() => {
-    axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify(login))
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        }).catch((error) => {
-          console.log(error.response.data)
-        })
-  }, [login])
+  // useEffect(() => {
+  //   axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify(login))
+  //       .then(res => {
+  //         console.log(res);
+  //         console.log(res.data);
+  //       }).catch((error) => {
+  //         console.log(error.response.data)
+  //       })
+  // }, [login])
 
 
   return (
