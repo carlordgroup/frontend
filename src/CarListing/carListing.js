@@ -1,7 +1,7 @@
 import React from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import "./carListing.css"
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -30,15 +30,22 @@ const rows = [
 
 
 const carListing = () => {
-  return (
-    <div className="carListPad" style={{ height: 400, width: '100%' }}>
 
+  return (
+    <div className="carListPad">
       <DataGrid
       rows={rows}
       columns={columns}
       pageSize={5}
       rowsPerPageOptions={[5]}
-      checkboxSelection
+      components={{ Toolbar: GridToolbar }}
+        componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+          }
+        }
+      }
       />
       <HomeMenu />
     </div>
