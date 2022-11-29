@@ -9,7 +9,7 @@ const columns = [
   { field: 'carType', headerName: 'Car Type', width: 130 },
   { field: 'color', headerName: 'Color', width: 90 },
   { field: 'carID', headerName: 'License Plate', width: 200 },
-  { field: 'link', headerName: 'Link', width: 200 },
+  { field: 'link', headerName: 'View', width: 200 },
   {
     field: 'fullCar',
     headerName: 'Car',
