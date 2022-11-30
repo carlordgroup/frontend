@@ -1,8 +1,16 @@
 .loginForm{
   display: flex;
   justify-content: center;
-  margin-top: 5em;
+  margin-top: 7em;
+  align-items: center;
 }
+
+.createAccountForm{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 .LoginSpacing{
   padding-bottom: 2em;
@@ -27,4 +35,15 @@
 .resetText{
   text-align: center;
   padding-top: 1em;
+}
+
+.errorText{
+  display: block;
+  text-align: center;
+  color: red;
+  margin-top: 4.5em;
+}
+
+.loginGrid{
+  margin-top: 3em;
 }

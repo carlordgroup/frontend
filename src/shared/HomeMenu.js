@@ -11,11 +11,28 @@ import logo from './logo-no-background.png'
 import {
   Link
 } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { useToken, useTokenUpdate } from '../appContext'
 
-const navItems = ['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login'];
-const links = ['/', '/carlisting', '/bookings', '/account', '/contact', '/login'];
 
 function DrawerAppBar(props) {
+  const token = useToken()
+  const tokenContext = useTokenUpdate();
+
+  const [navItems, setNavItems] = useState(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login']);
+  const [links, setLinks] = useState(['/', '/carlisting', '/bookings', '/account', '/contact', '/login']);
+
+  useEffect(()=>{
+    if(token){
+      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Logout'])
+      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/login'])
+    }
+    else{
+      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login'])
+      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/login'])
+    }
+  }, [token])
+
   return (
     <Box sx={{ display: 'flex' }} class="homeMenu">
       <AppBar component="nav">
@@ -30,11 +47,19 @@ function DrawerAppBar(props) {
             </div>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item, index) => (
-              <Button key={item} sx={{ color: '#fff' }}>
+            {navItems.map((item, index) => {
+              let normal
+              if(item !== "Logout")(
+                normal = (<Button key={item} sx={{ color: '#fff' }}>
+                  <Link to={links[index]} className="homeMenuLinks">{item}</Link>
+                </Button>))
+              else{
+                normal = (<Button onClick={()=>{tokenContext()}} key={item} sx={{ color: '#fff' }}>
                 <Link to={links[index]} className="homeMenuLinks">{item}</Link>
-              </Button>
-            ))}
+              </Button>)
+              }
+              return normal
+            })}
           </Box>
         </Toolbar>
       </AppBar>
