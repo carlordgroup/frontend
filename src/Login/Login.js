@@ -10,53 +10,66 @@ import {
 } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useTokenUpdate } from '../appContext'
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
 
-  const [login, setLogin] = useState();
-  const [config, setConfig] = useState();
+  //const [config, setConfig] = useState();
+
+  const [loginValue, setLoginValue] = useState();
+  const [passValue, setPassValue] = useState();
+
+  const [loginPressed, setLoginPressed] = useState();
+  const [successful, setSuccessful] = useState(false)
+
+  //const token = useToken()
+  const tokenContext = useTokenUpdate();
+  const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   setConfig({
+  //     headers: {
+  //        'Authorization': "Bearer " + token
+  //     }
+  //  })
+  // }, [token])
+
+  // useEffect(() => {
+  //   console.log(config)
+  //   axios.get(`https://carlord.moki.cat/api/account/`, config)
+  //       .then(res => {
+  //         console.log(res);
+  //         console.log(res.data);
+  //       }).catch((error) => {
+  //         console.log(error.response.data)
+  //       })
+  // }, [config])
 
   useEffect(() => {
-    setLogin({email:"test2@gmail.com", password: "test"})
-    setConfig({
-      headers: {
-         'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2Njk3NzY3NTEsImlkIjoxMiwib3JpZ19pYXQiOjE2Njk2OTAzNTF9.rCDoEHxz9P5AAZLgi-rqkVeQyoyFWRltnMadlSFkBoM"
-      }
-   })
-  }, [])
-
-  useEffect(() => {
-    console.log(config)
-    axios.get(`https://carlord.moki.cat/api/account/`, config)
+    if(loginPressed){
+      axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify({email: loginValue, password: passValue}))
         .then(res => {
-          console.log(res);
-          console.log(res.data);
+          if(res.status === 200){
+            setSuccessful(true)
+          }
+          tokenContext(res.data.token);
         }).catch((error) => {
           console.log(error.response.data)
         })
-  }, [config])
+    }
+    setLoginPressed(false);
+  }, [loginValue, passValue, loginPressed, tokenContext])
 
-  // useEffect(() => {
-  //   console.log(login)
-  //   axios.put(`https://carlord.moki.cat/api/account/register`, JSON.stringify(login))
-  //       .then(res => {
-  //         console.log(res);
-  //         console.log(res.data);
-  //       }).catch((error) => {
-  //         console.log(error.response.data)
-  //       })
-  // }, [login])
+  useEffect(() => {
+    if(successful){
+      navigate('/')
+    }
+  }, [successful, navigate])
 
-  // useEffect(() => {
-  //   axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify(login))
-  //       .then(res => {
-  //         console.log(res);
-  //         console.log(res.data);
-  //       }).catch((error) => {
-  //         console.log(error.response.data)
-  //       })
-  // }, [login])
-
+  useEffect(()=>{
+    console.log(successful)
+  })
 
   return (
     <>
@@ -78,6 +91,8 @@ const Login = () => {
               id="outlined-required"
               label="Username"
               defaultValue=""
+              value={loginValue}
+              onChange={(input)=>{setLoginValue(input.target.value)}}
               className="loginSpacing"
             />
             <br></br>
@@ -86,11 +101,13 @@ const Login = () => {
               id="outlined-password-input"
               label="Password"
               type="password"
+              value={passValue}
+              onChange={(input)=>{setPassValue(input.target.value)}}
               autoComplete="current-password"
             />
             <br></br>
             <div className="loginButton">
-              <Button variant="outlined">Log in</Button>
+              <Button onClick={()=>{setLoginPressed(true)}} variant="outlined">Log in</Button>
             </div>
           </div>
         </Box>

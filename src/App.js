@@ -11,36 +11,39 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import { AppProvider } from './appContext';
 
 function App() {
   return (
-    <div className="App">
-      <Router>
-          {/* <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/bookings">About</Link>
-              </li>
-            </ul>
-          </nav> */}
+    <AppProvider>
+      <div className="App">
+        <Router>
+            {/* <nav>
+              <ul>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <li>
+                  <Link to="/bookings">About</Link>
+                </li>
+              </ul>
+            </nav> */}
 
-          {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
-          <Routes>
-            <Route path="/CarListing" element={<CarListing />}/>
-            <Route path="/Account" element={<Account />}/>
-            <Route path="/bookings" element={<Bookings />}/>
-            <Route path="/login" element={<Login/>}/>
-            <Route path="/contact" element={<Contact/>}/>
-            <Route path="/login/create" element={<CreateAccount/>}/>
-            <Route path="/login/reset" element={<ForgotPassword/>}/>
-            <Route path="/" element={<Home />}/>
-          </Routes>
-      </Router>
-    </div>
+            {/* A <Switch> looks through its children <Route>s and
+                renders the first one that matches the current URL. */}
+            <Routes>
+              <Route path="/CarListing" element={<CarListing />}/>
+              <Route path="/Account" element={<Account />}/>
+              <Route path="/bookings" element={<Bookings />}/>
+              <Route path="/login" element={<Login/>}/>
+              <Route path="/contact" element={<Contact/>}/>
+              <Route path="/login/create" element={<CreateAccount/>}/>
+              <Route path="/login/reset" element={<ForgotPassword/>}/>
+              <Route path="/" element={<Home />}/>
+            </Routes>
+        </Router>
+      </div>
+    </AppProvider>
   );
 }
 
