@@ -9,3 +9,15 @@
   flex-direction: column;
   margin: 0 10em;
 }
+
+.contactRedirect{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 0.75em;
+}
+
+.contactText{
+  margin-top: 4cm;
+  text-align: center;
+}

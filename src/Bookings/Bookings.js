@@ -1,7 +1,7 @@
 import React from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import "./bookings.css"
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -34,7 +34,14 @@ const Bookings = () => {
         columns={columns}
         pageSize={5}
         rowsPerPageOptions={[5]}
-        checkboxSelection
+        components={{ Toolbar: GridToolbar }}
+        componentsProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+          }
+        }
+      }
       />
       <HomeMenu />
     </div>
