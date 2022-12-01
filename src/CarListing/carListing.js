@@ -10,38 +10,53 @@ import {
 } from "react-router-dom";
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'brand', headerName: 'Brand', width: 130 },
-  { field: 'carType', headerName: 'Car Type', width: 130 },
-  { field: 'color', headerName: 'Color', width: 90 },
-  { field: 'carID', headerName: 'License Plate', width: 200 },
-  { field: 'link', headerName: 'View', width: 200, renderCell: (cellValues) => {
+  { field: 'id', headerName: "ID", width: 130, align: 'center', headerAlign: 'center'},
+  { field: 'brand', headerName: 'Brand', width: 130, align: 'center', headerAlign: 'center' },
+  //{ field: 'carType', headerName: 'Car Type', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'deposit', headerName: 'Deposit', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'mileage', headerName: 'Mileage', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'model', headerName: 'Model', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'plate_country', headerName: 'Plate Origin', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'plate_number', headerName: 'Plate Number', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'price', headerName: 'Price', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'status', headerName: 'Status', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'year', headerName: 'Year', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130, renderCell: (cellValues) => {
     return <Link to ='/carListing/confirmPayment'>Link</Link>;
   } },
-  {
-    field: 'fullCar',
-    headerName: 'Car',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    valueGetter: (params) =>
-      `${params.row.brand || ''} ${params.row.carType || ''}`,
-  },
 ];
 
-const rows = [
-  { id: 1, brand: 'Toyota', carType: 'Sedan', color: "Red", carID: '123', link: 'View'},
-];
+const CarListing = () => {
 
-const carListing = () => {
+  const token = useToken()
+  const [config, setConfig] = useState()
+
+  const[cars, setCars] = useState([])
+
+  useEffect(() => {
+    setConfig({
+      headers: {
+          'Authorization': "Bearer " + token
+      }
+    })
+  }, [token])
+
+  useEffect(() => {
+        axios.get(`https://carlord.moki.cat/api/management/car/`,  config)
+        .then(res => {
+        setCars(res.data)
+        }).catch((error) => {
+        console.log(error.response.data)
+    })
+}, [config])
 
   return (
     <div className="carListPad">
       <DataGrid
-      rows={rows}
+      rows={cars}
       columns={columns}
-      pageSize={5}
-      rowsPerPageOptions={[5]}
+      pageSize={20}
+      rowsPerPageOptions={[20]}
       components={{ Toolbar: GridToolbar }}
         componentsProps={{
           toolbar: {
@@ -57,4 +72,4 @@ const carListing = () => {
   )
 }
 
-export default carListing
+export default CarListing
