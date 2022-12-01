@@ -16,7 +16,7 @@ const Cards = () => {
   const [expiry, setExpiry] = useState()
   const [update, setUpdate] = useState()
 
-  //const [numOfCards, setNumOfCards] = useState(1)
+  const [numOfCards, setNumOfCards] = useState(0)
   const [creditCardData, setCreditCardData] = useState()
 
 
@@ -33,6 +33,9 @@ const Cards = () => {
       .then(res => {
           console.log(res.data);
           setCreditCardData(res.data[0]);
+          if(res.data){
+            setNumOfCards(1)
+          }
       }).catch((error) => {
           console.log(error.response.data)
     })
@@ -40,20 +43,25 @@ const Cards = () => {
 
   useEffect(() => {
     if(update){
-        axios.post(`https://carlord.moki.cat/api/card/`, {"cardholder_name": name, "number": number, "valid_until": expiry}, config)
+        let url = "https://carlord.moki.cat/api/card/"
+        if(numOfCards > 0){
+          url =  "https://carlord.moki.cat/api/card/1"
+        }
+        axios.post(url, {"cardholder_name": name, "number": number, "valid_until": expiry}, config)
         .then(res => {
           console.log(res.data);
-          setCreditCardData(res.data);
+          setCreditCardData(res.data[0]);
+          setNumOfCards(1)
         }).catch((error) => {
           console.log(error.response.data)
     })
     }
     setUpdate(false)
-  }, [update, name, number, expiry, config])
+  }, [update, name, number, expiry, config, numOfCards])
 
   useEffect(()=>{
     console.log(creditCardData)
-    if(creditCardData){
+    if(creditCardData){ 
       setName(creditCardData.cardholder_name)
       setNumber(creditCardData.number)
       setExpiry(creditCardData.valid_until)
