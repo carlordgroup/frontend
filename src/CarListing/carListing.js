@@ -2,6 +2,12 @@ import React from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import "./carListing.css"
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import { useToken } from '../appContext';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import {
+  Link
+} from "react-router-dom";
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -9,7 +15,9 @@ const columns = [
   { field: 'carType', headerName: 'Car Type', width: 130 },
   { field: 'color', headerName: 'Color', width: 90 },
   { field: 'carID', headerName: 'License Plate', width: 200 },
-  { field: 'link', headerName: 'View', width: 200 },
+  { field: 'link', headerName: 'View', width: 200, renderCell: (cellValues) => {
+    return <Link to ='/carListing/confirmPayment'>Link</Link>;
+  } },
   {
     field: 'fullCar',
     headerName: 'Car',
@@ -22,12 +30,8 @@ const columns = [
 ];
 
 const rows = [
-  { id: 1, brand: 'Toyota', carType: 'Sedan', color: "Red", carID: '123', link: "link"},
-  { id: 2, brand: 'Toyota', carType: 'Sedan', color: "Blue", carID: '124', link: "link"},
-  { id: 3, brand: 'Ford', carType: 'Hatchback', color: "Black", carID: '125', link: "link"},
-  { id: 4, brand: 'Honda', carType: 'Sedan', color: "Green", carID: '126', link: "link"},
+  { id: 1, brand: 'Toyota', carType: 'Sedan', color: "Red", carID: '123', link: 'View'},
 ];
-
 
 const carListing = () => {
 
@@ -46,6 +50,7 @@ const carListing = () => {
           }
         }
       }
+      
       />
       <HomeMenu />
     </div>
