@@ -12,7 +12,6 @@
     border: 2px solid;
     padding: 20px;
     width: 275px;
-    height: 400px;
     margin: 20px;
     display: flex;
     flex-direction: column;
@@ -30,7 +29,6 @@
     border: 2px solid;
     padding: 20px;
     width: 275px;
-    height: 400px;
     margin: 20px;
     bottom: 51px;
 }

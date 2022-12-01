@@ -1,0 +1,14 @@
+.cardsTitle{
+  text-align: center;
+}
+
+.creditCardBox{
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding-bottom: 4em;
+}
+
+.creditCardTextBox{
+  margin-right: 1em;
+}
