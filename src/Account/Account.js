@@ -1,123 +1,147 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import Box from '@mui/material/Box'
 import TextField from '@mui/material/TextField'
 import './account.css'
 import AvatarIcon from './AvatarIcon'
 import Button from '@mui/material/Button'
+import axios from 'axios';
+import { useToken } from '../appContext'
+import Cards from './Cards'
 
 function AccountTextFields() {
-    const [fName, setfName] = useState(localStorage.getItem('firstName'));
-    const [lName, setlName] = useState(localStorage.getItem('lastName'));
-    const [adr, setAdr] = useState(localStorage.getItem('address'));
-    const [number, setNumber] = useState(localStorage.getItem('phoneNum'));
-    const [email, setEmail] = useState(localStorage.getItem('email'));
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        localStorage.setItem('firstName', fName)
-        localStorage.setItem('lastName', lName)
-        localStorage.setItem('address', adr)
-        localStorage.setItem('phoneNum', number)
-        localStorage.setItem('email', email)
-        console.log(fName, lName, adr, number, email)
+    const [fName, setfName] = useState();
+    const [lName, setlName] = useState();
+    const [adr, setAdr] = useState();
+    const [phone, setPhone] = useState();
+    const [config, setConfig] = useState();
 
-    }
+    const [prevFName, setPrevFName] = useState();
+    const [prevLName, setPrevLName] = useState();
+    const [prevAdr, setPrevAdr] = useState();
+    const [prevPhone, setPrevPhone] = useState();
+
+    const [userInfo, setUserInfo] = useState();
+
+    const [updateInfo, setUpdateInfo] = useState(false);
+
+    const token = useToken()
+
+    useEffect(() => {
+        setConfig({
+        headers: {
+            'Authorization': "Bearer " + token
+        }
+        })
+    }, [token])
+
+    useEffect(() => {
+        axios.get(`https://carlord.moki.cat/api/user/`, config)
+            .then(res => {
+                console.log(res.data);
+                setUserInfo(res.data);
+            }).catch((error) => {
+                console.log(error.response.data)
+        })
+    }, [config, setUserInfo])
+
+    useEffect(() => {
+        if(userInfo){
+            setPrevFName(userInfo.first_name)
+            setPrevLName(userInfo.last_name)
+            setPrevAdr(userInfo.address)
+            setPrevPhone(userInfo.tel)
+            setfName(userInfo.first_name)
+            setlName(userInfo.last_name)
+            setAdr(userInfo.address)
+            setPhone(userInfo.tel)
+        }
+    }, [userInfo])
+
+    useEffect(() => {
+        if(updateInfo){
+            axios.post(`https://carlord.moki.cat/api/user/`, {"first_name": fName, "last_name": lName, "address": adr, "tel": phone}, config)
+           
+            .then(res => {
+            setUserInfo(res.data);
+            }).catch((error) => {
+            console.log(error.response.data)
+        })
+        }
+        setUpdateInfo(false)
+    }, [config, fName, lName, adr, phone, updateInfo])
 
     return (
-        <div className='textFields'>
-            <div className="profileInfo">
-                <Box
-                    component="form"
-                    sx={{
-                        '& .MuiTextField-root': { m: 1, width: '25ch' },
-                    }}
-                    noValidate
-                    autoComplete="off"
-                    onSubmit={handleSubmit}
-                >   
-                <div className="accountInfo">
-                    <TextField
-                        required
-                        onChange={(e) => setfName(e.target.value)}
-                        id="firstName"
-                        label="First Name"
-                        type="firstName"
-                        InputLabelProps={{
+        <>
+            <div className='textFields'>
+                <div className="profileInfo">
+                    <Box
+                        component="form"
+                        sx={{
+                            '& .MuiTextField-root': { m: 1, width: '25ch' },
+                        }}
+                        noValidate
+                        autoComplete="off"
+                    >   
+                    <div className="accountInfo">
+                        <TextField
+                            required
+                            id="firstName"
+                            label="First Name"
+                            type="firstName"
+                            value={fName}
+                            onChange={(e) => setfName(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            required
+                            id="lastName"
+                            label="Last Name"
+                            type="lastName"
+                            value={lName}
+                            onChange={(e) => setlName(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            required
+                            id="address"
+                            label="Address"
+                            type="address"
+                            value={adr}
+                            onChange={(e) => setAdr(e.target.value)}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                        <TextField
+                            required
+                            id="phoneNumber"
+                            label="Phone Number"
+                            type="phoneNumber"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            InputLabelProps={{
                             shrink: true,
-                        }}
-                    />
-                    <TextField
-                        required
-                        onChange={(e) => setlName(e.target.value)}
-                        id="lastName"
-                        label="Last Name"
-                        type="lastName"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <TextField
-                        required
-                        onChange={(e) => setAdr(e.target.value)}
-                        id="address"
-                        label="Address"
-                        type="address"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <TextField
-                        required
-                        onChange={(e) => setNumber(e.target.value)}
-                        id="phoneNumber"
-                        label="Phone Number"
-                        type="phoneNumber"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                    />
-                    <TextField
-                        required
-                        onChange={(e) => setEmail(e.target.value)}
-                        id="email"
-                        label="Email"
-                        type="email"
-                        InputLabelProps={{
-                        shrink: true,
-                        }}
-                    />
-                    <div className="buttonPad">
-                        <Button type="submit" variant="outlined" size="medium">Save</Button>
+                            }}
+                        />
+                        <div className="buttonPad">
+                            <Button onClick={()=>{setUpdateInfo(true)}} variant="outlined" size="medium">Save</Button>
+                        </div>
+                    </div>
+                    </Box>
+                    <div className='userInfo'> 
+                        <p>First Name: {prevFName}</p>
+                        <p>Last Name: {prevLName}</p>
+                        <p>Address: {prevAdr}</p>
+                        <p>Phone Number: {prevPhone}</p>
                     </div>
                 </div>
-                </Box>
-                <div className='userInfo'> 
-                    <p>
-                        First Name: {fName}
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        Last Name: {lName}
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        Address: {adr}
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        Phone Number: {number}
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        <br></br>
-                        Email: {email}
-                    </p>
-                </div>
             </div>
-        </div>
+        </>
     );
 }
 
@@ -128,6 +152,7 @@ const Account = () => {
         <h1 className="profile">Profile</h1>
         <AvatarIcon />
         <AccountTextFields />
+        <Cards />
     </div>
   )
 }
