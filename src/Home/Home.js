@@ -13,7 +13,7 @@ import tree from './tree.jpg'
 import road from './road.jpg'
 import wine from './wine.jpg'
 
-//This card is for the tree information on the landing page
+
 function TreeCard() {
   return (
     <Card sx={{ maxWidth: 345 }}>
@@ -39,7 +39,6 @@ function TreeCard() {
   );
 }
 
-//This card is for the road information on the landing page
 function RoadCard() {
   return (
     <Card sx={{ maxWidth: 345 }} >
@@ -65,7 +64,6 @@ function RoadCard() {
   );
 }
 
-//This card is for the wine information on the landing page
 function WineCard() {
   return (
     <Card sx={{ maxWidth: 345 }} >
@@ -92,7 +90,6 @@ function WineCard() {
   );
 }
 
-//Organize the data that is shown on the home page
 const Home = () => {
   return (
     <div>
@@ -101,6 +98,7 @@ const Home = () => {
         <div className="homePageText">
           <h2 className="welcomeText">Welcome to Carlord!</h2>
           <p className="searchText">Click below to rent the car of your choice</p>
+          {/* <TextField id="outlined-basic" label="Search cars" variant="outlined" sx={{ m: 1, width: '50ch' }}  /> */}
           <Grid xs={12} className="contactRedirect">
             <div>
               <Button component = {Link} to= './carlisting' variant='outlined'>

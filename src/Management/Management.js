@@ -41,7 +41,6 @@ const Management = () => {
 
   const token = useToken();
 
-  //Token to authenicate when calling APIs
   useEffect(() => {
     setConfig({
       headers: {
@@ -50,7 +49,6 @@ const Management = () => {
    })
   }, [token])
 
-  //Submit a new car to backend
   useEffect(() => {
     if(submitCar){
       axios.post(`https://carlord.moki.cat/api/management/car/`, JSON.stringify({
@@ -81,7 +79,6 @@ const Management = () => {
     setSubmitCar(false)
   }, [config, brand, carType, color, deposit, locationId, mileage, model, plateCountry, plateNumber, price, status, unitPrice, year, submitCar])
 
-  //Get location data from backend
   useEffect(()=>{
       client.getLocations().then(({data})=>{
         setLocations(data)
@@ -89,7 +86,6 @@ const Management = () => {
       })
   },[])
 
-  //Submit a new location to backend
   useEffect(() => {
     if(submitLocation){
       axios.post(`https://carlord.moki.cat/api/management/location/`, JSON.stringify({

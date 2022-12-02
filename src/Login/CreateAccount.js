@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import {isEmail} from "../utils/verify";
 
 const CreateAccount = () => {
-  //Set variables for creating an account
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -22,7 +21,7 @@ const CreateAccount = () => {
   const [error, setError] = useState("")
   const navigate = useNavigate();
 
-  //Make sure the password matches and the email is valid
+
   const register=()=>{
     if (confirmPassword!==password){
       setError("Password does not match")
@@ -32,7 +31,6 @@ const CreateAccount = () => {
       setError("Please input a valid Email")
       return
     }
-    //Call the backend API to create the account
     axios.post(`https://carlord.moki.cat/api/account/register`, JSON.stringify({email: email, password: password}))
         .then(res => {
           navigate('/login')

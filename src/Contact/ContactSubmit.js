@@ -3,7 +3,6 @@ import HomeMenu from "../shared/HomeMenu"
 import Grid from '@mui/material/Grid'
 
 const ContactSubmit = () => {
-  //Thank you message for submitting contact message
   return (
     <div>
         <Grid container spacing={3}>
