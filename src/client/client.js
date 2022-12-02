@@ -27,4 +27,8 @@ export default {
     deleteLocation:(id)=>client.delete(`/management/location/${id}`),
     getCars:()=>client.get(`/management/car/`),
     deleteCar:(id)=>client.delete(`/management/car/${id}`),
+    createOneTimeUser:()=>client.post(`/management/offline/user`,{}),
+    createOneTimeCard:(user,number,cardholder_name,valid_until)=>client.post("/management/offline/card/"+user,{number,cardholder_name,valid_until}),
+    offlineBooking:(car_id,card_id,user_id,start_time,end_time)=>client.post("/management/offline/book",{car_id,card_id,user_id,start_time,end_time}),
+
 }

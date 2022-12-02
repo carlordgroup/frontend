@@ -34,6 +34,7 @@ function App() {
               <Route path="/contact/contactsubmit" element={<ContactSubmit/>}/>
               <Route path="/carlisting/confirmpayment/:id" element={<ConfirmPayment/>}/>
               <Route path="/management/location" element={<LocationList/>}/>
+              <Route path="/management/offline/:id" element={<ConfirmPayment/>}/>
               <Route path="/management" element={<Management/>}/>
               <Route path="/" element={<Home />}/>
             </Routes>
