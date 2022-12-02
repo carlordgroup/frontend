@@ -140,21 +140,8 @@ const Bookings = () => {
 
 
   return (
-    <div className="bookingPad" style={{ height: 400, width: '100%' }}>
+    <div className="bookingPad">
       <DataGrid
-        // rows={bookingObjects.map((object)=> {
-        //   return {
-        //     object,
-        //     start_at: new Date(object.start_at),
-        //     end_at: new Date(object.end_at),
-        //     brand: object.edges.car.brand,
-        //     car_type: object.edges.car.car_type,
-        //     mileage: object.edges.car.mileage,
-        //     model: object.edges.car.model,
-        //     plate_number: object.edges.car.plate_number,
-        //     year: object.edges.car.year
-        //   }
-        // })}
         rows={bookingObjects.map((object) => {
           console.log(object)
           return {
@@ -170,8 +157,8 @@ const Bookings = () => {
           }
         })}
         columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={20}
+        rowsPerPageOptions={[20]}
         components={{ Toolbar: GridToolbar }}
         componentsProps={{
           toolbar: {

@@ -1,3 +1,6 @@
 .bookingPad {
     margin-top: 2cm;
+    display: flex;
+    height: 675px;
+    flex-direction: column;
 }

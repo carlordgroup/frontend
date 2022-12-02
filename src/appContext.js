@@ -12,7 +12,7 @@ export function useTokenUpdate(){
 }
 
 export function AppProvider({children}){
-  const [token, setToken] = useState()
+  const [token, setToken] = useState(localStorage.getItem("token"))
 
   function tokenInfo(token){
     setToken(token)

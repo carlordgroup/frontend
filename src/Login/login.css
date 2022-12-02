@@ -47,3 +47,8 @@
 .loginGrid{
   margin-top: 3em;
 }
+
+.errorMessage{
+  color: red;
+  padding-top: 1em;
+}

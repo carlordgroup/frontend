@@ -21,7 +21,9 @@ const Login = () => {
   const [passValue, setPassValue] = useState();
 
   const [loginPressed, setLoginPressed] = useState();
-  const [successful, setSuccessful] = useState(false)
+  const [successful, setSuccessful] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   //const token = useToken()
   const tokenContext = useTokenUpdate();
@@ -53,9 +55,11 @@ const Login = () => {
           if(res.status === 200){
             setSuccessful(true)
           }
-          tokenContext(res.data.token);
+          tokenContext(res.data.token)
+          localStorage.setItem("token", res.data.token)
         }).catch((error) => {
           console.log(error.response.data)
+          setErrorMessage(error.response.data.error)
         })
     }
     setLoginPressed(false);
@@ -68,8 +72,10 @@ const Login = () => {
   }, [successful, navigate])
 
   useEffect(()=>{
-    console.log(successful)
-  })
+    if(loginPressed){
+      setShowError(true)
+    }
+  }, [loginPressed])
 
   return (
     <>
@@ -86,6 +92,7 @@ const Login = () => {
           className="loginForm"
         >
           <div>
+            {showError && <div className="errorMessage">{errorMessage}</div>}
             <TextField
               required
               id="outlined-required"
