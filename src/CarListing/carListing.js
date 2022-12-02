@@ -2,13 +2,14 @@ import React from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import "./carListing.css"
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
-import { useToken } from '../appContext';
+import {useAdmin, useToken} from '../appContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
   Link
 } from "react-router-dom";
 import Button from '@mui/material/Button'
+import client from "../client/client";
 
 const columns = [
   { field: 'id', headerName: "ID", width: 130, align: 'center', headerAlign: 'center'},
@@ -22,15 +23,15 @@ const columns = [
   { field: 'price', headerName: 'Price', width: 130, align: 'center', headerAlign: 'center' },
   { field: 'status', headerName: 'Status', width: 130, align: 'center', headerAlign: 'center' },
   { field: 'year', headerName: 'Year', width: 130, align: 'center', headerAlign: 'center' },
-  { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130, 
-  renderCell: (params) => {
-    return <Button><Link to ={`/carListing/confirmPayment/${params.row.id}`} className="carRentalLink">Rent</Link></Button>;
-  }},
+
+
 ];
 
 const CarListing = () => {
 
   const token = useToken()
+  const admin = useAdmin()
+
   const [config, setConfig] = useState()
 
   const[cars, setCars] = useState([])
@@ -43,14 +44,28 @@ const CarListing = () => {
     })
   }, [token])
 
+    const deleteCar = (id)=>{
+        client.deleteCar(id)
+            .then(res => {
+                getCar()
+            }).catch((error) => {
+            console.log(error.response.data)
+        })
+
+    }
+
+    const getCar = ()=>{
+        client.getCars()
+            .then(res => {
+                setCars(res.data)
+            }).catch((error) => {
+            console.log(error.response.data)
+            })
+    }
   useEffect(() => {
-        axios.get(`https://carlord.moki.cat/api/management/car/`,  config)
-        .then(res => {
-        setCars(res.data)
-        }).catch((error) => {
-        console.log(error.response.data)
-    })
-}, [config])
+    getCar()
+
+}, [])
 
   useEffect(()=>{
     console.log(cars)
@@ -61,13 +76,22 @@ const CarListing = () => {
     }
   }, [cars])
 
-  
+    const renderColumns = (()=>{
+        if (admin) return[...columns, { field: 'Operation', headerName: 'Operation', width: 130, renderCell:(params)=>{return <Button color="warning" variant="outlined" onClick={(e)=>{
+                deleteCar(params.row.id)
+            }}>Delete</Button>}},]
+        return [...columns, { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130,
+            renderCell: (params) => {
+                return <Button><Link to ={`/carListing/confirmPayment/${params.row.id}`} className="carRentalLink">Rent</Link></Button>;
+            }},]
+
+    })()
 
   return (
     <div className="carListPad">
       <DataGrid
       rows={cars}
-      columns={columns}
+      columns={renderColumns}
       pageSize={20}
       rowsPerPageOptions={[20]}
       components={{ Toolbar: GridToolbar }}
@@ -78,7 +102,7 @@ const CarListing = () => {
           }
         }
       }
-      
+
       />
       <HomeMenu />
     </div>

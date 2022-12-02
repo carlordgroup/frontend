@@ -6,6 +6,10 @@ import axios from 'axios';
 import './management.css'
 
 import { useToken } from '../appContext'
+import Typography from "@mui/material/Typography";
+import client from "../client/client";
+import {InputLabel, MenuItem, Select} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
 const Management = () => {
 
@@ -14,7 +18,7 @@ const Management = () => {
   const [carType, setCarType] = useState();
   const [color, setColor] = useState();
   const [deposit, setDeposit] = useState();
-  const [locationId, setLocationId] = useState();
+  const [locationId, setLocationId] = useState(null);
   const [mileage, setMileage] = useState();
   const [model, setModel] = useState();
   const [plateCountry, setPlateCountry] = useState();
@@ -33,6 +37,7 @@ const Management = () => {
 
   const [submitLocation, setSubmitLocation] = useState();
   const [submitLocationMessage, setSubmitLocationMessage] = useState();
+  const [locations, setLocations] = useState([]);
 
   const token = useToken();
 
@@ -58,8 +63,8 @@ const Management = () => {
       plate_number: plateNumber,
       price: parseInt(price),
       status: status,
-      unit_price: unitPrice,
-      year: year
+      unit_price: parseInt(unitPrice),
+      year: parseInt(year)
       }), config)
       .then(res => {
         console.log(res)
@@ -73,6 +78,13 @@ const Management = () => {
     }
     setSubmitCar(false)
   }, [config, brand, carType, color, deposit, locationId, mileage, model, plateCountry, plateNumber, price, status, unitPrice, year, submitCar])
+
+  useEffect(()=>{
+      client.getLocations().then(({data})=>{
+        setLocations(data)
+        data.length&&setLocationId(data[0].id)
+      })
+  },[])
 
   useEffect(() => {
     if(submitLocation){
@@ -93,10 +105,22 @@ const Management = () => {
     }
     setSubmitLocation(false)
   }, [config, latitude, longitude, name, submitLocation])
-
+  const nav = useNavigate()
   return (
     <>
       <HomeMenu/>
+      <div style={{width:"100%", textAlign:"center", marginTop:"90px"}}>
+
+        <Typography variant="h3">Management</Typography>
+        <Typography variant="h5">Go To Listings...</Typography>
+        <div>
+          <Button size="large" onClick={()=>{nav(("/carlisting"))}}>Car List</Button>
+          <Button size="large" onClick={()=>{nav(("/management/location"))}}>Location List</Button>
+        </div>
+      </div>
+      <div>
+
+      </div>
       <div className="managementPage">
         <div className="carInput">
           <h1>Add new car</h1>
@@ -141,14 +165,17 @@ const Management = () => {
             />
           </div>
           <div className="managementTextField">
-            <TextField
-              required
-              id="outlined-password-input"
-              label="Location ID"
-              value={locationId}
-              onChange={(input)=>{setLocationId(input.target.value)}}
-              autoComplete="current-password"
-            />
+              <InputLabel id="demo-simple-select-label">Location</InputLabel>
+              <Select
+                  value={locationId}
+                  label="Location"
+                  onChange={(e)=>setLocationId(e.target.value)}
+              >
+                {locations.map(item=><MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>)}
+
+
+              </Select>
+
           </div>
           <div className="managementTextField">
             <TextField

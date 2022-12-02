@@ -3,27 +3,10 @@ import HomeMenu from '../shared/HomeMenu'
 import "./bookings.css"
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 import axios from 'axios';
-import { useToken } from '../appContext'
+import {useAdmin, useToken} from '../appContext'
+import Button from "@mui/material/Button";
+import client from "../client/client";
 
-const columns = [
-  { field: 'id', headerName: "ID", width: 130 },
-  { field: 'booking_status', headerName: 'Status', width: 130 },
-  { field: 'start_at', headerName: 'Start Date', width: 130 },
-  { field: 'end_at', headerName: 'End Date', width: 130 },
-  { field: 'rate', headerName: 'Rate', width: 130 },
-  { field: 'exceed_rate', headerName: 'Exceed Rate', width: 130 },
-  { field: 'brand', headerName: 'Car Brand', width: 130},
-  { field: 'car_type', headerName: 'Car Type', width: 130},
-  { field: 'mileage', headerName: 'Mileage', width: 130},
-  { field: 'model', headerName: 'Model', width: 130},
-  { field: 'plate_number', headerName: 'Plate Number', width: 130},
-  { field: 'year', headerName: 'Year', width: 130},
-  // { field: 'fuelStart', headerName: 'Fuel Start', width: 130 },
-  // { field: 'fuelEnd', headerName: 'Fuel End', width: 130 },
-  // { field: 'mileageStart', headerName: 'Mileage Start', width: 130 },
-  // { field: 'mileageEnd', headerName: 'Mileage End', width: 130 },
-  // { field: 'returnCarAt', headerName: 'Return Car At', width: 130 },
-];
 
 // const rows = [
 //   { id: 1, status: 1, deposit: 'Man', startDate: 'Jia', endDate: "Corolla", exceedRate: '123', fuelStart: '321', fuelEnd: '321', mileageStart: '300', mileageEnd: '350', rate: '50', returnCarAt: 'Toronto' },
@@ -34,6 +17,32 @@ const Bookings = () => {
   const [config, setConfig] = useState()
   const [bookingObjects, setBookingObjects] = useState([])
   const token = useToken()
+  const columns = [
+    { field: 'id', headerName: "ID", width: 130 },
+    { field: 'booking_status', headerName: 'Status', width: 130 },
+    { field: 'start_at', headerName: 'Start Date', width: 130 },
+    { field: 'end_at', headerName: 'End Date', width: 130 },
+    { field: 'rate', headerName: 'Rate', width: 130 },
+    { field: 'exceed_rate', headerName: 'Exceed Rate', width: 130 },
+    { field: 'brand', headerName: 'Car Brand', width: 130},
+    { field: 'car_type', headerName: 'Car Type', width: 130},
+    { field: 'mileage', headerName: 'Mileage', width: 130},
+    { field: 'model', headerName: 'Model', width: 130},
+    { field: 'plate_number', headerName: 'Plate Number', width: 130},
+    { field: 'year', headerName: 'Year', width: 130},
+    { field: 'cancel', headerName: 'cancel', width: 130, renderCell:(params)=>{return <Button disabled={params.row.booking_status==="cancel"||params.row.edges.billing.status==="paid"} color="error" variant="outlined" onClick={(e)=>{
+        client.cancelBooking(params.row.id).then(()=>{getBookings()})
+      }}>Cancel</Button>}
+
+    },
+    { field: 'bill', headerName: 'bill', width: 130, renderCell:(params)=>{return <Button disabled={params.row.booking_status==="cancel"||params.row.edges.billing.status==="paid"} color="primary" variant="outlined" onClick={(e)=>{
+        client.pay(params.row.edges.billing.id).then(()=>{getBookings()})
+      }}>{params.row.edges.billing.status}</Button>}
+
+    },
+  ];
+
+  const admin = useAdmin()
 
   useEffect(() => {
       setConfig({
@@ -43,15 +52,14 @@ const Bookings = () => {
       })
   }, [token])
 
+  const getBookings= async ()=>{
+    const {data}=admin?(await client.getAllBooking()):(await client.getBooking())
+    setBookingObjects(data)
+  }
+
   useEffect(() => {
-    axios.get(`https://carlord.moki.cat/api/booking/`, config)
-      .then(res => {
-        console.log(res.data);
-        setBookingObjects(res.data);
-      }).catch((error) => {
-        console.log(error.response.data)
-    })  
-  }, [config])
+   getBookings()
+  }, [admin])
 
   useEffect(()=>{
     console.log(bookingObjects)
@@ -100,7 +108,7 @@ const Bookings = () => {
   //       setBookingObjects(res.data);
   //     }).catch((error) => {
   //       console.log(error.response.data)
-  //   })  
+  //   })
   // }, [config])
 
   // useEffect(() => {

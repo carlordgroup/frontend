@@ -35,16 +35,16 @@ function DrawerAppBar(props) {
 
   useEffect(()=>{
     if(token){
-      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Logout'])
-      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/login'])
+      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', "Billing", 'Logout'])
+      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', "/billing", '/login'])
     }
     else{
-      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login'])
-      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/login'])
+      setNavItems(['Home', 'Login'])
+      setLinks(['/', '/login'])
     }
     if(admin){
-      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Management', 'Logout'])
-      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/management', '/login'])
+      setNavItems(['Home', 'Bookings', 'Account', 'Contact', 'Management', 'Logout'])
+      setLinks(['/',  '/bookings', '/account', '/contact', '/management', '/login'])
     }
   }, [token, admin])
 
