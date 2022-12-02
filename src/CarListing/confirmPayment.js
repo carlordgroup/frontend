@@ -55,8 +55,12 @@ const ConfirmPayment = () => {
 
   const makeBooking = async ()=> {
     console.log(endDate)
-    await client.addBooking(parseInt(id), cardID, parseInt((endDate.$d.getTime()/1000).toFixed(0)),parseInt((startDate.$d.getTime()/1000).toFixed(0)),)
-    navigate('/bookings')
+    try {
+      await client.addBooking(parseInt(id), cardID, parseInt((endDate.$d.getTime()/1000).toFixed(0)),parseInt((startDate.$d.getTime()/1000).toFixed(0)),)
+      navigate('/bookings')
+    }catch ({response:{data}}){
+      setErrorMessage(data.error)
+    }
 
   }
 
@@ -76,6 +80,11 @@ const ConfirmPayment = () => {
     }
     if (!endDate){
       setErrorMessage("You should select a start date")
+      return false
+    }
+
+    if (startDate.$d>=endDate.$d){
+      setErrorMessage("Time is not valid")
       return false
     }
     if (!cardID){

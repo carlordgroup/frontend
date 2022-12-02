@@ -15,25 +15,14 @@ import {
   Route
 } from "react-router-dom";
 import { AppProvider } from './appContext';
+import LocationList from "./Management/LocationList";
 
 function App() {
   return (
     <AppProvider>
       <div className="App">
         <Router>
-            {/* <nav>
-              <ul>
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li>
-                  <Link to="/bookings">About</Link>
-                </li>
-              </ul>
-            </nav> */}
 
-            {/* A <Switch> looks through its children <Route>s and
-                renders the first one that matches the current URL. */}
             <Routes>
               <Route path="/CarListing" element={<CarListing />}/>
               <Route path="/Account" element={<Account />}/>
@@ -44,6 +33,7 @@ function App() {
               <Route path="/login/reset" element={<ForgotPassword/>}/>
               <Route path="/contact/contactsubmit" element={<ContactSubmit/>}/>
               <Route path="/carlisting/confirmpayment/:id" element={<ConfirmPayment/>}/>
+              <Route path="/management/location" element={<LocationList/>}/>
               <Route path="/management" element={<Management/>}/>
               <Route path="/" element={<Home />}/>
             </Routes>
