@@ -62,9 +62,11 @@ const Management = () => {
       year: year
       }), config)
       .then(res => {
-        console.log(res);
+        console.log(res)
+        if(res.status === 201){
+          setSubmitLocationMessage(res.statusText)
+        }
       }).catch((error) => {
-        console.log(error)
         console.log(error.response.data)
         setSubmitCarMessage(error.response.data.error)
       })
@@ -80,7 +82,9 @@ const Management = () => {
       name: name
       }), config)
       .then(res => {
-        console.log(res);
+        if(res.status === 201){
+          setSubmitLocationMessage(res.statusText)
+        }
       }).catch((error) => {
         console.log(error)
         console.log(error.response.data)
