@@ -56,7 +56,7 @@ const Management = () => {
 
   useEffect(() => {
     if(submitCar){
-      axios.post(`https://carlord.moki.cat/api/management/car`, JSON.stringify({
+      axios.post(`https://carlord.moki.cat/api/management/car/`, JSON.stringify({
       brand: brand,
       car_type: carType,
       color: color,
