@@ -1,0 +1,16 @@
+.managementPage{
+  display: flex;
+  justify-content: center;
+}
+
+.carInput{
+  padding: 2em;
+}
+
+.locationInput{
+  padding: 2em;
+}
+
+.managementTextField{
+  padding-bottom: 0.75em;
+}

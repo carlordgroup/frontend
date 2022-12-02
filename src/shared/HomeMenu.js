@@ -12,12 +12,13 @@ import {
   Link
 } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { useToken, useTokenUpdate } from '../appContext'
+import { useToken, useTokenUpdate, useAdmin } from '../appContext'
 
 
 function DrawerAppBar(props) {
   const token = useToken()
   const tokenContext = useTokenUpdate();
+  const admin = useAdmin();
 
   const [navItems, setNavItems] = useState(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login']);
   const [links, setLinks] = useState(['/', '/carlisting', '/bookings', '/account', '/contact', '/login']);
@@ -31,10 +32,14 @@ function DrawerAppBar(props) {
       setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login'])
       setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/login'])
     }
-  }, [token])
+    if(admin){
+      setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Management', 'Logout'])
+      setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/management', '/login'])
+    }
+  }, [token, admin])
 
   return (
-    <Box sx={{ display: 'flex' }} class="homeMenu">
+    <Box sx={{ display: 'flex' }} className="homeMenu">
       <AppBar component="nav">
         <Toolbar>
           <Typography
