@@ -8,6 +8,7 @@ import axios from 'axios';
 import {
   Link
 } from "react-router-dom";
+import Button from '@mui/material/Button'
 
 const columns = [
   { field: 'id', headerName: "ID", width: 130, align: 'center', headerAlign: 'center'},
@@ -21,9 +22,10 @@ const columns = [
   { field: 'price', headerName: 'Price', width: 130, align: 'center', headerAlign: 'center' },
   { field: 'status', headerName: 'Status', width: 130, align: 'center', headerAlign: 'center' },
   { field: 'year', headerName: 'Year', width: 130, align: 'center', headerAlign: 'center' },
-  { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130, renderCell: (cellValues) => {
-    return <Link to ='/carListing/confirmPayment'>Link</Link>;
-  } },
+  { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130, 
+  renderCell: (params) => {
+    return <Button><Link to ={`/carListing/confirmPayment/${params.row.id}`} className="carRentalLink">Rent</Link></Button>;
+  }},
 ];
 
 const CarListing = () => {
@@ -49,6 +51,17 @@ const CarListing = () => {
         console.log(error.response.data)
     })
 }, [config])
+
+  useEffect(()=>{
+    console.log(cars)
+    if(cars.length !== 0){
+      for(let i = 0; i<cars.length; i++){
+        cars[i].link = () => {   <Link to ={`/carListing/confirmPayment/${cars[i].id}`}>Link</Link> }
+      }
+    }
+  }, [cars])
+
+  
 
   return (
     <div className="carListPad">
