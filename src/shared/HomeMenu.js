@@ -7,21 +7,31 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import './homeMenu.css'
 import logo from './logo-no-background.png'
-
+import axios from 'axios';
 import {
   Link
 } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { useToken, useTokenUpdate, useAdmin } from '../appContext'
+import { useToken, useTokenUpdate, useAdmin, useAdminUpdate } from '../appContext'
 
 
 function DrawerAppBar(props) {
   const token = useToken()
   const tokenContext = useTokenUpdate();
   const admin = useAdmin();
+  const adminContext = useAdminUpdate();
+  const [config, setConfig] = useState();
 
   const [navItems, setNavItems] = useState(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact', 'Login']);
   const [links, setLinks] = useState(['/', '/carlisting', '/bookings', '/account', '/contact', '/login']);
+
+  useEffect(() => {
+    setConfig({
+      headers: {
+         'Authorization': "Bearer " + token
+      }
+   })
+  }, [token])
 
   useEffect(()=>{
     if(token){
@@ -37,6 +47,18 @@ function DrawerAppBar(props) {
       setLinks(['/', '/carlisting', '/bookings', '/account', '/contact', '/management', '/login'])
     }
   }, [token, admin])
+
+  useEffect(() => {
+    if(token){
+      axios.get(`https://carlord.moki.cat/api/account/`, config)
+        .then(res => {
+          console.log(res);
+          adminContext(res.data.is_admin)
+        }).catch((error) => {
+          console.log(error.response.data)
+        })
+    }
+  }, [config, token, adminContext])
 
   return (
     <Box sx={{ display: 'flex' }} className="homeMenu">

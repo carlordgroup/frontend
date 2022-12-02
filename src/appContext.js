@@ -23,7 +23,7 @@ export function useAdminUpdate(){
 
 export function AppProvider({children}){
   const [token, setToken] = useState(localStorage.getItem("token"))
-  const [admin, setAdmin] = useState(true);
+  const [admin, setAdmin] = useState(false);
 
   function tokenInfo(token){
     setToken(token)

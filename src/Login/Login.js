@@ -25,7 +25,6 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  //const token = useToken()
   const tokenContext = useTokenUpdate();
   const navigate = useNavigate();
 
