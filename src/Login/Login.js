@@ -12,57 +12,34 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTokenUpdate } from '../appContext'
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
 
 const Login = () => {
-
-  //const [config, setConfig] = useState();
 
   const [loginValue, setLoginValue] = useState();
   const [passValue, setPassValue] = useState();
 
-  const [loginPressed, setLoginPressed] = useState();
   const [successful, setSuccessful] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   const tokenContext = useTokenUpdate();
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   setConfig({
-  //     headers: {
-  //        'Authorization': "Bearer " + token
-  //     }
-  //  })
-  // }, [token])
-
-  // useEffect(() => {
-  //   console.log(config)
-  //   axios.get(`https://carlord.moki.cat/api/account/`, config)
-  //       .then(res => {
-  //         console.log(res);
-  //         console.log(res.data);
-  //       }).catch((error) => {
-  //         console.log(error.response.data)
-  //       })
-  // }, [config])
-
-  useEffect(() => {
-    if(loginPressed){
-      axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify({email: loginValue, password: passValue}))
+  const login=()=>{
+    axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify({email: loginValue, password: passValue}))
         .then(res => {
           if(res.status === 200){
             setSuccessful(true)
           }
           tokenContext(res.data.token)
+          console.log(res.data)
           localStorage.setItem("token", res.data.token)
         }).catch((error) => {
-          console.log(error.response.data)
-          setErrorMessage(error.response.data.error)
-        })
-    }
-    setLoginPressed(false);
-  }, [loginValue, passValue, loginPressed, tokenContext])
+          setErrorMessage("Password and Email does not match")
+      console.log(error.response.data)
+    })
+
+  }
 
   useEffect(() => {
     if(successful){
@@ -70,17 +47,15 @@ const Login = () => {
     }
   }, [successful, navigate])
 
-  useEffect(()=>{
-    if(loginPressed){
-      setShowError(true)
-    }
-  }, [loginPressed])
-
   return (
     <>
     <HomeMenu/>
     <Grid container spacing={3}>
       <Grid xs={12}>
+        <div>
+          <Typography variant="h3" style={{textAlign:"center", paddingTop:"60px"}}>Login</Typography>
+        </div>
+
         <Box
           component="form"
           sx={{
@@ -91,11 +66,12 @@ const Login = () => {
           className="loginForm"
         >
           <div>
-            {showError && <div className="errorMessage">{errorMessage}</div>}
+            {<div className="errorMessage">
+              {errorMessage&& <p>{errorMessage}</p>}</div>}
             <TextField
               required
               id="outlined-required"
-              label="Username"
+              label="Email"
               defaultValue=""
               value={loginValue}
               onChange={(input)=>{setLoginValue(input.target.value)}}
@@ -113,7 +89,7 @@ const Login = () => {
             />
             <br></br>
             <div className="loginButton">
-              <Button onClick={()=>{setLoginPressed(true)}} variant="outlined">Log in</Button>
+              <Button onClick={login} variant="outlined">Log in</Button>
             </div>
           </div>
         </Box>
