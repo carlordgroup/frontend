@@ -19,6 +19,8 @@ import {InputLabel, MenuItem, Select} from "@mui/material";
 const ConfirmPayment = () => {
 
   let { id } = useParams();
+  const offline = document.location.toString().includes("offline/")
+
   const [selectedCar, setSelectedCar] = useState()
   const [config, setConfig] = useState()
   const [startDate, setStartDate] = useState(null)
@@ -32,6 +34,11 @@ const ConfirmPayment = () => {
   const token = useToken()
   const navigate = useNavigate();
 
+  const [user, setUser] = useState()
+  const [name, setName] = useState()
+  const [number, setNumber] = useState()
+  const [expiry, setExpiry] = useState()
+
   useEffect(() => {
     setConfig({
       headers: {
@@ -39,6 +46,12 @@ const ConfirmPayment = () => {
       }
     })
   }, [token])
+
+  useEffect(()=>{
+    if (offline){
+      client.createOneTimeUser().then(({data})=>setUser(data.id))
+    }
+  },[])
 
   useEffect(() => {
     if (id){
@@ -54,6 +67,11 @@ const ConfirmPayment = () => {
   }, [])
 
   const makeBooking = async ()=> {
+    if (offline){
+      await client.offlineBooking(parseInt(id), cardID, user, parseInt((endDate.$d.getTime()/1000).toFixed(0)),parseInt((startDate.$d.getTime()/1000).toFixed(0)),)
+      navigate('/bookings')
+      return
+    }
     console.log(endDate)
     try {
       await client.addBooking(parseInt(id), cardID, parseInt((endDate.$d.getTime()/1000).toFixed(0)),parseInt((startDate.$d.getTime()/1000).toFixed(0)),)
@@ -99,6 +117,11 @@ const ConfirmPayment = () => {
   return true
   }
 
+  const addCard=async ()=>{
+    const {data} = await client.createOneTimeCard(user,number,name,expiry,)
+    setCardID(data.id)
+  }
+
   return (
     <div>
         <HomeMenu />
@@ -133,20 +156,21 @@ const ConfirmPayment = () => {
                   <Button variant="outlined" size="medium"><Link to='/account' className="editCard">Edit</Link></Button>
                 </div>
               </div>
-              <InputLabel id="demo-simple-select-label">Card</InputLabel>
-              <Select
-                  key={cardID}
-                  value={cardID}
-                  label="Card"
-                  onChange={(e)=>{
-                    setCardID(e.target.value)
-                  }
-                  }
-              >
-                {cards.map(card=><MenuItem value={card.id} key={card.id}>{card.number} {card.cardholder_name} {card.valid_until}</MenuItem>)}
-              </Select>
-              {informationDisplay(cards.find(item=>item.id===cardID))}
-
+              {!offline&&<>
+                <InputLabel id="demo-simple-select-label">Card</InputLabel>
+                <Select
+                    key={cardID}
+                    value={cardID}
+                    label="Card"
+                    onChange={(e)=>{
+                      setCardID(e.target.value)
+                    }
+                    }
+                >
+                  {cards.map(card=><MenuItem value={card.id} key={card.id}>{card.number} {card.cardholder_name} {card.valid_until}</MenuItem>)}
+                </Select>
+                {informationDisplay(cards.find(item=>item.id===cardID))}
+              </>}
             </div>
           </div>
           <div className="confirmBooking">
@@ -176,37 +200,53 @@ const ConfirmPayment = () => {
                 />
               </LocalizationProvider>
             </div>
-            {/* <div className="confirmBookingFields">
+            {offline&&<><div className="creditCardBox">
+
               <TextField
-                required
-                id="address"
-                label="Pickup Location"
-                type="address"
-                value={pickUp}
-                onChange={(e) => setPickUp(e.target.value)}
-                InputLabelProps={{
+                  required
+                  id="firstName"
+                  label="Cardholder Name"
+                  type="firstName"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="creditCardTextBox"
+                  InputLabelProps={{
                     shrink: true,
-                }}
+                  }}
               />
-            </div>
-            <div className="confirmBookingFields">
               <TextField
-                required
-                id="address"
-                label="Dropoff Location"
-                type="address"
-                value={dropOff}
-                onChange={(e) => setDropOff(e.target.value)}
-                InputLabelProps={{
+                  required
+                  id="lastName"
+                  label="Credit Card Number"
+                  type="lastName"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  className="creditCardTextBox"
+                  InputLabelProps={{
                     shrink: true,
-                }}
+                  }}
               />
-            </div> */}
+              <TextField
+                  required
+                  id="address"
+                  label="Expiry Date"
+                  type="address"
+                  value={expiry}
+                  onChange={(e) => setExpiry(e.target.value)}
+                  className="creditCardTextBox"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+              />
+              <Button onClick={()=>{addCard()}} variant="outlined" size="medium">Save</Button>
+            </div></>}
             <div className="confirmBookingFields">
               {errorMessage && <div className="errorMessage">{errorMessage}</div>}
               <Button className="confirmBookingButton" onClick={() => validate()&&makeBooking()} variant="outlined" size="medium">Confirm Booking</Button>
             </div>
           </div>
+
+
         </>
         }
     </div>

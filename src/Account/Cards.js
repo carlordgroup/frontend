@@ -7,7 +7,6 @@ import client from "../client/client";
 
 const Cards = () => {
 
-
   const [name, setName] = useState()
   const [number, setNumber] = useState()
   const [expiry, setExpiry] = useState()
