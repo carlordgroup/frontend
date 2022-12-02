@@ -32,6 +32,7 @@ const Login = () => {
             setSuccessful(true)
           }
           tokenContext(res.data.token)
+          console.log(res.data)
           localStorage.setItem("token", res.data.token)
         }).catch((error) => {
           setErrorMessage("Password and Email does not match")
@@ -65,7 +66,8 @@ const Login = () => {
           className="loginForm"
         >
           <div>
-            {<div className="errorMessage">          {errorMessage&& <p>{errorMessage}</p>}</div>}
+            {<div className="errorMessage">
+              {errorMessage&& <p>{errorMessage}</p>}</div>}
             <TextField
               required
               id="outlined-required"
