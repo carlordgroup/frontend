@@ -6,7 +6,7 @@ import {useAdmin, useToken} from '../appContext';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
-  Link
+    Link, useNavigate
 } from "react-router-dom";
 import Button from '@mui/material/Button'
 import client from "../client/client";
@@ -35,7 +35,7 @@ const CarListing = () => {
   const [config, setConfig] = useState()
 
   const[cars, setCars] = useState([])
-
+  const nav = useNavigate()
   useEffect(() => {
     setConfig({
       headers: {
@@ -77,9 +77,14 @@ const CarListing = () => {
   }, [cars])
 
     const renderColumns = (()=>{
-        if (admin) return[...columns, { field: 'Operation', headerName: 'Operation', width: 130, renderCell:(params)=>{return <Button color="warning" variant="outlined" onClick={(e)=>{
+        // give different table on different role
+        if (admin) return[...columns,
+            { field: 'delete', headerName: 'delete', width: 130, renderCell:(params)=>{return <Button color="warning" variant="outlined" onClick={(e)=>{
                 deleteCar(params.row.id)
-            }}>Delete</Button>}},]
+            }}>Delete</Button>}},
+            { field: 'offline', headerName: 'offline', width: 130, renderCell:(params)=>{return <Button color="primary" variant="outlined" onClick={(e)=>{
+                nav("/management/offline/"+params.row.id)
+            }}>Offline Booking</Button>}},]
         return [...columns, { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130,
             renderCell: (params) => {
                 return <Button><Link to ={`/carListing/confirmPayment/${params.row.id}`} className="carRentalLink">Rent</Link></Button>;
