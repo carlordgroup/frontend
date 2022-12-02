@@ -45,16 +45,6 @@ const Management = () => {
   }, [token])
 
   useEffect(() => {
-    console.log(config)
-    axios.get(`https://carlord.moki.cat/api/user/`, config)
-        .then(res => {
-          console.log(res);
-        }).catch((error) => {
-          console.log(error.response.data)
-        })
-  }, [config])
-
-  useEffect(() => {
     if(submitCar){
       axios.post(`https://carlord.moki.cat/api/management/car/`, JSON.stringify({
       brand: brand,
@@ -72,9 +62,11 @@ const Management = () => {
       year: year
       }), config)
       .then(res => {
-        console.log(res);
+        console.log(res)
+        if(res.status === 201){
+          setSubmitLocationMessage(res.statusText)
+        }
       }).catch((error) => {
-        console.log(error)
         console.log(error.response.data)
         setSubmitCarMessage(error.response.data.error)
       })
@@ -84,13 +76,15 @@ const Management = () => {
 
   useEffect(() => {
     if(submitLocation){
-      axios.post(`https://carlord.moki.cat/api/management/location`, JSON.stringify({
+      axios.post(`https://carlord.moki.cat/api/management/location/`, JSON.stringify({
       latitude: parseInt(latitude),
       longitude: parseInt(longitude),
       name: name
       }), config)
       .then(res => {
-        console.log(res);
+        if(res.status === 201){
+          setSubmitLocationMessage(res.statusText)
+        }
       }).catch((error) => {
         console.log(error)
         console.log(error.response.data)
