@@ -8,6 +8,7 @@ import ForgotPassword from './Login/ForgotPassword'
 import Contact from './Contact/Contact'
 import ContactSubmit from './Contact/ContactSubmit'
 import ConfirmPayment from './CarListing/confirmPayment'
+import Management from './Management/Management'
 import {
   BrowserRouter as Router,
   Routes,
@@ -43,6 +44,7 @@ function App() {
               <Route path="/login/reset" element={<ForgotPassword/>}/>
               <Route path="/contact/contactsubmit" element={<ContactSubmit/>}/>
               <Route path="/carlisting/confirmpayment/:id" element={<ConfirmPayment/>}/>
+              <Route path="/management" element={<Management/>}/>
               <Route path="/" element={<Home />}/>
             </Routes>
         </Router>
