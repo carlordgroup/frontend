@@ -81,7 +81,7 @@ function DrawerAppBar(props) {
                   <Link to={links[index]} className="homeMenuLinks">{item}</Link>
                 </Button>))
               else{
-                normal = (<Button onClick={()=>{tokenContext(); localStorage.setItem("token", null);}} key={item} sx={{ color: '#fff' }}>
+                normal = (<Button onClick={()=>{tokenContext(); localStorage.setItem("token", null); adminContext(false);}} key={item} sx={{ color: '#fff' }}>
                 <Link to={links[index]} className="homeMenuLinks">{item}</Link>
               </Button>)
               }
