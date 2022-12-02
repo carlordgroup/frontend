@@ -3,9 +3,7 @@ import './cards.css'
 import { useToken } from '../appContext'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
-import axios from 'axios';
 import client from "../client/client";
-import Box from "@mui/material/Box";
 
 const Cards = () => {
 

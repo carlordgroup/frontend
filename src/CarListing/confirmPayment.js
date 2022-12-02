@@ -13,20 +13,21 @@ import {
   Link
 } from "react-router-dom";
 import './carListing.css';
+import client from "../client/client";
+import {InputLabel, MenuItem, Select} from "@mui/material";
 
 const ConfirmPayment = () => {
 
   let { id } = useParams();
   const [selectedCar, setSelectedCar] = useState()
-  const [creditCardData, setCreditCardData] = useState()
-  const [submit, setSubmit] = useState(false)
   const [config, setConfig] = useState()
-  const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
   const [errorMessage, setErrorMessage] = useState()
   const [showError, setShowError] = useState()
-  // const [pickUp, setPickUp] = useState()
-  // const [dropOff, setDropOff] = useState()
+  const [cards, setCards] = useState([])
+  const [cardID, setCardID] = useState()
+
   const [successful, setSuccessful] = useState()
   const token = useToken()
   const navigate = useNavigate();
@@ -40,70 +41,54 @@ const ConfirmPayment = () => {
   }, [token])
 
   useEffect(() => {
-    axios.get(`https://carlord.moki.cat/api/management/car/`,  config)
-    .then(res => {
-      setSelectedCar((res.data.filter(car => car.id === parseInt(id))[0]))
-    }).catch((error) => {
-      console.log(error.response.data)
+    if (id){
+      client.getCar(parseInt(id)).then(({data})=>setSelectedCar(data))
+    }
+  }, [ id])
+
+  useEffect(() => {
+    client.getCards().then(({data})=>{
+      setCards(data)
+      if (data.length)setCardID(data[0].id)
     })
-  }, [config, id])
+  }, [])
 
-  useEffect(() => {
-    axios.get(`https://carlord.moki.cat/api/card/`, config)
-      .then(res => {
-          setCreditCardData(res.data[0]);
-      }).catch((error) => {
-          console.log(error.response.data)
-    })
-  }, [config])
+  const makeBooking = async ()=> {
+    console.log(endDate)
+    await client.addBooking(parseInt(id), cardID, parseInt((endDate.$d.getTime()/1000).toFixed(0)),parseInt((startDate.$d.getTime()/1000).toFixed(0)),)
+    navigate('/bookings')
 
-  useEffect(() => {
-    if(submit && startDate && endDate){
-      axios.post(`https://carlord.moki.cat/api/booking/`, JSON.stringify({
-      booking_status: "Booked",
-      deposit: "100",
-      end_at: "December 9, 2022",
-      exceed_rate: "70",
-      fuel_level_at_begin: "80",
-      fuel_level_at_end: "20",
-      mileage_begin: "23000",
-      mileage_end: "25000",
-      rate: "50",
-      return_car_at: "Toronto",
-      start_at: "Toronto",
-      // return_car_at: dropOff,
-      // start_at: pickUp,
-      car_id: parseInt(id),
-      card_id: 1,
-      start_time: parseInt(new Date(startDate.$y, startDate.$M, startDate.$D).getTime()/1000),
-      end_time: parseInt(new Date(endDate.$y, endDate.$M, endDate.$D).getTime()/1000)
-      }), config)
-        .then(res => {
-          if(res.status === 201){
-            setSuccessful(true)
-          }
-        }).catch((error) => {
-          console.log(error.response.data)
-          setErrorMessage(error.response.data.error)
-      })
-    }
-    setSubmit(false)
-  }, [config, startDate, endDate, submit, id])
-  
-  useEffect(() => {
-    if(successful){
-      navigate('/bookings')
-    }
-  }, [successful, navigate])
+  }
 
-  useEffect(() => {
-    if(submit){
-      if (!startDate || !endDate){
-        setErrorMessage("Please select a valid start date and end date")
-      }
-      setShowError(true)
+  const informationDisplay= (card)=>{
+    if (!card)return
+  return  <div>
+      <p>Cardholder Name: {card.cardholder_name}</p>
+      <p>Credit Card Number: {card.number}</p>
+      <p>Expiry Date: {card.valid_until}</p>
+    </div>
+  }
+
+  const validate=()=>{
+    if (!startDate){
+      setErrorMessage("You should select a start date")
+      return false
     }
-  }, [startDate, endDate, submit])
+    if (!endDate){
+      setErrorMessage("You should select a start date")
+      return false
+    }
+    if (!cardID){
+      setErrorMessage("You should select a card")
+    return false
+    }
+    if (!id){
+      setErrorMessage("You should select a car")
+      return false
+    }
+    setErrorMessage("")
+  return true
+  }
 
   return (
     <div>
@@ -139,9 +124,20 @@ const ConfirmPayment = () => {
                   <Button variant="outlined" size="medium"><Link to='/account' className="editCard">Edit</Link></Button>
                 </div>
               </div>
-              <p>Cardholder Name: {creditCardData ? creditCardData.cardholder_name : ""}</p>
-              <p>Credit Card Number: {creditCardData ? creditCardData.number : ""}</p>
-              <p>Expiry Date: {creditCardData ? creditCardData.valid_until : ""}</p>
+              <InputLabel id="demo-simple-select-label">Card</InputLabel>
+              <Select
+                  key={cardID}
+                  value={cardID}
+                  label="Card"
+                  onChange={(e)=>{
+                    setCardID(e.target.value)
+                  }
+                  }
+              >
+                {cards.map(card=><MenuItem value={card.id} key={card.id}>{card.number} {card.cardholder_name} {card.valid_until}</MenuItem>)}
+              </Select>
+              {informationDisplay(cards.find(item=>item.id===cardID))}
+
             </div>
           </div>
           <div className="confirmBooking">
@@ -198,8 +194,8 @@ const ConfirmPayment = () => {
               />
             </div> */}
             <div className="confirmBookingFields">
-              {showError && <div className="errorMessage">{errorMessage}</div>}
-              <Button className="confirmBookingButton" onClick={() => {setSubmit(true);}} variant="outlined" size="medium">Confirm Booking</Button>
+              {errorMessage && <div className="errorMessage">{errorMessage}</div>}
+              <Button className="confirmBookingButton" onClick={() => validate()&&makeBooking()} variant="outlined" size="medium">Confirm Booking</Button>
             </div>
           </div>
         </>

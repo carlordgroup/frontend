@@ -43,7 +43,7 @@ const Login = () => {
 
   useEffect(() => {
     if(successful){
-      navigate('/')
+      document.location="/"
     }
   }, [successful, navigate])
 

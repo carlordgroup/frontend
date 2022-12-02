@@ -16,5 +16,7 @@ export default {
         cardholder_name,
         number,
         valid_until
-    })
+    }),
+    addBooking:(car_id,card_id,end_time,start_time)=>client.post("booking/",{car_id,card_id,end_time,start_time}),
+    getCar:(id)=>client.get(`/management/car/${id}`)
 }
