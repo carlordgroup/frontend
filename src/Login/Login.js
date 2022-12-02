@@ -16,6 +16,7 @@ import Typography from "@mui/material/Typography";
 
 const Login = () => {
 
+  //Set variables for login value
   const [loginValue, setLoginValue] = useState();
   const [passValue, setPassValue] = useState();
 
@@ -25,6 +26,7 @@ const Login = () => {
   const tokenContext = useTokenUpdate();
   const navigate = useNavigate();
 
+  //Send login information to REST API to login
   const login=()=>{
     axios.post(`https://carlord.moki.cat/api/account/login`, JSON.stringify({email: loginValue, password: passValue}))
         .then(res => {
@@ -32,7 +34,6 @@ const Login = () => {
             setSuccessful(true)
           }
           tokenContext(res.data.token)
-          console.log(res.data)
           localStorage.setItem("token", res.data.token)
         }).catch((error) => {
           setErrorMessage("Password and Email does not match")
@@ -41,6 +42,7 @@ const Login = () => {
 
   }
 
+  //If login is successful go to landing page
   useEffect(() => {
     if(successful){
       document.location="/"

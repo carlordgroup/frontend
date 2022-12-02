@@ -27,6 +27,7 @@ function AccountTextFields() {
 
     const token = useToken()
 
+    //Get user token
     useEffect(() => {
         setConfig({
         headers: {
@@ -35,16 +36,17 @@ function AccountTextFields() {
         })
     }, [token])
 
+    //Get user information
     useEffect(() => {
         axios.get(`https://carlord.moki.cat/api/user/`, config)
             .then(res => {
-                console.log(res.data);
                 setUserInfo(res.data);
             }).catch((error) => {
                 console.log(error.response.data)
         })
     }, [config, setUserInfo])
 
+    //Set fields to show current user information
     useEffect(() => {
         if(userInfo){
             setPrevFName(userInfo.first_name)
@@ -58,6 +60,7 @@ function AccountTextFields() {
         }
     }, [userInfo])
 
+    //Update the users info and send to REST API
     useEffect(() => {
         if(updateInfo){
             axios.post(`https://carlord.moki.cat/api/user/`, {"first_name": fName, "last_name": lName, "address": adr, "tel": phone}, config)
