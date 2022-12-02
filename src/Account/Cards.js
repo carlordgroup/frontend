@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import './cards.css'
-import { useToken } from '../appContext'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import client from "../client/client";
 
 const Cards = () => {
 
+  //Set variables for car information
   const [name, setName] = useState()
   const [number, setNumber] = useState()
   const [expiry, setExpiry] = useState()
@@ -18,12 +18,14 @@ const Cards = () => {
         getCards()
     },[])
 
+    //Get cards from backend
     const getCards =async ()=>{
         const {data} = await client.getCards()
         console.table(data)
         setCards(data);
     }
 
+    //Add a card to the backend
     const addCard = async ()=>{
         if (parseInt(number)){
             setError("")
@@ -34,6 +36,8 @@ const Cards = () => {
         await client.addCard(number,name,expiry)
         await getCards()
     }
+
+    //Delete a card in the backend
     const deleteCard = async (id)=>{
         await client.deleteCard(id)
         await getCards()

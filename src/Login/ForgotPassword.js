@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import {isEmail} from "../utils/verify";
 import Typography from "@mui/material/Typography";
 
+
+//This is the page that is shown when a user forgets their password
 const ForgotPassword = () => {
   const [email, setEmail] = useState("")
   const [click, setClicked] = useState(false)

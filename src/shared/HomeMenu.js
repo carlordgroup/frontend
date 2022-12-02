@@ -16,6 +16,7 @@ import { useToken, useTokenUpdate, useAdmin, useAdminUpdate } from '../appContex
 
 
 function DrawerAppBar(props) {
+  //Get tokens and admin values to see if user is logged in and if they are an admin
   const token = useToken()
   const tokenContext = useTokenUpdate();
   const admin = useAdmin();
@@ -33,6 +34,7 @@ function DrawerAppBar(props) {
    })
   }, [token])
 
+  //Set the headers and links for the app bar
   useEffect(()=>{
     if(token){
       setNavItems(['Home', 'Car Listings', 'Bookings', 'Account', 'Contact',  'Logout'])
@@ -52,7 +54,6 @@ function DrawerAppBar(props) {
     if(token){
       axios.get(`https://carlord.moki.cat/api/account/`, config)
         .then(res => {
-          console.log(res);
           adminContext(res.data.is_admin)
         }).catch((error) => {
           console.log(error.response.data)
