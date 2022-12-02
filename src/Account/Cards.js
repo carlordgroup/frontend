@@ -31,9 +31,10 @@ const Cards = () => {
   useEffect(() => {
     axios.get(`https://carlord.moki.cat/api/card/`, config)
       .then(res => {
-          console.log(res.data);
+          console.log(res);
           setCreditCardData(res.data[0]);
-          if(res.data){
+          if(res.data.length !== 0){
+            console.log("here")
             setNumOfCards(1)
           }
       }).catch((error) => {
@@ -44,7 +45,7 @@ const Cards = () => {
   useEffect(() => {
     if(update){
         let url = "https://carlord.moki.cat/api/card/"
-        if(numOfCards > 0){
+        if(numOfCards !== 0){
           url =  "https://carlord.moki.cat/api/card/1"
         }
         axios.post(url, {"cardholder_name": name, "number": number, "valid_until": expiry}, config)

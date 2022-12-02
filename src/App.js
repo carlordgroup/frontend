@@ -42,7 +42,7 @@ function App() {
               <Route path="/login/create" element={<CreateAccount/>}/>
               <Route path="/login/reset" element={<ForgotPassword/>}/>
               <Route path="/contact/contactsubmit" element={<ContactSubmit/>}/>
-              <Route path="/carlisting/confirmpayment" element={<ConfirmPayment/>}/>
+              <Route path="/carlisting/confirmpayment/:id" element={<ConfirmPayment/>}/>
               <Route path="/" element={<Home />}/>
             </Routes>
         </Router>
