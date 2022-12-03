@@ -82,9 +82,9 @@ const CarListing = () => {
             { field: 'delete', headerName: 'delete', width: 130, renderCell:(params)=>{return <Button color="warning" variant="outlined" onClick={(e)=>{
                 deleteCar(params.row.id)
             }}>Delete</Button>}},
-            { field: 'offline', headerName: 'offline', width: 130, renderCell:(params)=>{return <Button color="primary" variant="outlined" onClick={(e)=>{
+            { field: 'offline', headerName: 'offline', width: 130, renderCell:(params)=>{return <Button  color="primary" variant="outlined" onClick={(e)=>{
                 nav("/management/offline/"+params.row.id)
-            }}>Offline Booking</Button>}},]
+            }}>Offline</Button>}},]
         return [...columns, { field: 'link', headerName: 'View', align: 'center', headerAlign: 'center', width: 130,
             renderCell: (params) => {
                 return <Button><Link to ={`/carListing/confirmPayment/${params.row.id}`} className="carRentalLink">Rent</Link></Button>;

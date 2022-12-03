@@ -114,7 +114,7 @@ const Management = () => {
         <Typography variant="h3">Management</Typography>
         <Typography variant="h5">Go To Listings...</Typography>
         <div>
-          <Button size="large" onClick={()=>{nav(("/carlisting"))}}>Car List</Button>
+          <Button size="large"  onClick={()=>{nav(("/carlisting"))}}>Car List</Button>
           <Button size="large" onClick={()=>{nav(("/management/location"))}}>Location List</Button>
         </div>
       </div>
