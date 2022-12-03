@@ -2,16 +2,21 @@ import React, {useState, useEffect} from 'react'
 import HomeMenu from '../shared/HomeMenu'
 import "./bookings.css"
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
+import axios from 'axios';
 import {useAdmin, useToken} from '../appContext'
 import Button from "@mui/material/Button";
 import client from "../client/client";
+
+
+// const rows = [
+//   { id: 1, status: 1, deposit: 'Man', startDate: 'Jia', endDate: "Corolla", exceedRate: '123', fuelStart: '321', fuelEnd: '321', mileageStart: '300', mileageEnd: '350', rate: '50', returnCarAt: 'Toronto' },
+// ];
 
 const Bookings = () => {
 
   const [config, setConfig] = useState()
   const [bookingObjects, setBookingObjects] = useState([])
   const token = useToken()
-  //Set columns
   const columns = [
     { field: 'id', headerName: "ID", width: 130 },
     { field: 'booking_status', headerName: 'Status', width: 130 },
@@ -56,10 +61,11 @@ const Bookings = () => {
    getBookings()
   }, [admin])
 
-  //Map booking object
   useEffect(()=>{
+    console.log(bookingObjects)
     if(bookingObjects){
       bookingObjects.map((object) => {
+        console.log(object)
         return {
           ...object,
           start_at: new Date(object.start_at),

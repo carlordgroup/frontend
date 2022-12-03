@@ -4,7 +4,6 @@ import Grid from '@mui/material/Grid';
 import './contact.css'
 import { Link } from 'react-router-dom'
 
-//Contact box to allow customers to contact us
 const Contact = () => {
   return (
     <>

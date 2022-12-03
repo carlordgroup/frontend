@@ -151,12 +151,13 @@ const ConfirmPayment = () => {
           <div className="creditCardContainer">
             <div className="creditCard">
               <div className="creditCardTitle">
+
+              </div>
+              {!offline&&<>
                 <h2 className="creditCardSpacing">Credit Card</h2>
                 <div>
                   <Button variant="outlined" size="medium"><Link to='/account' className="editCard">Edit</Link></Button>
                 </div>
-              </div>
-              {!offline&&<>
                 <InputLabel id="demo-simple-select-label">Card</InputLabel>
                 <Select
                     key={cardID}
